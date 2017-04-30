@@ -1,0 +1,8 @@
+php bin/console doctrine:schema:update --force
+
+php bin/console server:run
+
+composer create-project symfony/framework-standard-edition
+
+php bin/console cache:clear --env=prod
+
