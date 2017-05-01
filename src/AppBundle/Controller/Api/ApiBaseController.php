@@ -1,17 +1,12 @@
 <?php
 
+namespace AppBundle\Controller\Api;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use JMS\Serializer\SerializationContext;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * Created by PhpStorm.
- * User: miguel
- * Date: 01/05/2017
- * Time: 16:03
- */
 class ApiBaseController extends Controller
 {
     /**
@@ -21,7 +16,6 @@ class ApiBaseController extends Controller
      */
     private function setContent($data, Response $response, $arrSerializationGroups)
     {
-
         if (!is_null($data))
         {
             $result['data'] = $data;
@@ -153,10 +147,7 @@ class ApiBaseController extends Controller
      * @param array $arrSerializationGroups
      * @return mixed
      */
-    protected function postEntity(
-        Request $request, $entityName,
-        callable $entityConfigurationFunction=null,
-        $arrSerializationGroups=array('Default'))
+    protected function postEntity(Request $request, $entityName, callable $entityConfigurationFunction=null, $arrSerializationGroups=array('Default'))
     {
         $entity = $this->get('jms_serializer')->deserialize($request->getContent(), $entityName, "json");
 
@@ -174,9 +165,7 @@ class ApiBaseController extends Controller
      * @param array $arrSerializationGroups
      * @return mixed
      */
-    protected function updateEntity(Request $request, $id, $entityName,
-                                    callable $entityConfigurationFunction=null,
-                                    $arrSerializationGroups=array('Default'))
+    protected function updateEntity(Request $request, $id, $entityName, callable $entityConfigurationFunction=null, $arrSerializationGroups=array('Default'))
     {
         try
         {

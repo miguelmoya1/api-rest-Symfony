@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 /**
  * product
@@ -59,9 +61,9 @@ class product
     /**
      * @var int
      *
-     * @ORM\Column(name="nimVisits", type="integer")
+     * @ORM\Column(name="numVisits", type="integer")
      */
-    private $nimVisits;
+    private $numVisits;
 
     /**
      * @var string
@@ -69,6 +71,45 @@ class product
      * @ORM\Column(name="mainPhoto", type="string", length=255)
      */
     private $mainPhoto;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="user", inversedBy="product")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @JMS\Accessor(getter="getIdUser")
+     * @JMS\SerializedName("idUser")
+     * @JMS\Type("integer")
+     */
+    private $user;
+
+    /**
+     * product constructor.
+     */
+    public function __construct()
+    {
+        $this->datePublished = new \DateTime('now');
+        $this->numVisits = 0;
+        $this->mainPhoto = 'default.jpg';
+        $this->user = new User();
+    }
+
+
+    public function getIdUser()
+    {
+        // return $this->user->getId();
+        return 0;
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
 
 
     /**
@@ -210,7 +251,7 @@ class product
      */
     public function setNimVisits($nimVisits)
     {
-        $this->nimVisits = $nimVisits;
+        $this->numVisits = $nimVisits;
 
         return $this;
     }
@@ -222,7 +263,7 @@ class product
      */
     public function getNimVisits()
     {
-        return $this->nimVisits;
+        return $this->numVisits;
     }
 
     /**
