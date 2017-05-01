@@ -13,6 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
 class user
 {
     /**
+     * user constructor.
+     */
+    public function __construct()
+    {
+    }
+
+    /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
@@ -24,9 +31,9 @@ class user
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="nombre", type="string", length=255)
      */
-    private $name;
+    private $nombre;
 
     /**
      * @var string
@@ -50,16 +57,16 @@ class user
     private $photo;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="lat", type="integer")
+     * @ORM\Column(name="lat", type="decimal", precision=10, scale=0)
      */
     private $lat;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="lng", type="integer")
+     * @ORM\Column(name="lng", type="decimal", precision=10, scale=0)
      */
     private $lng;
 
@@ -75,27 +82,27 @@ class user
     }
 
     /**
-     * Set name
+     * Set nombre
      *
-     * @param string $name
+     * @param string $nombre
      *
      * @return user
      */
-    public function setName($name)
+    public function setNombre($nombre)
     {
-        $this->name = $name;
+        $this->nombre = $nombre;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get nombre
      *
      * @return string
      */
-    public function getName()
+    public function getNombre()
     {
-        return $this->name;
+        return $this->nombre;
     }
 
     /**
@@ -197,7 +204,7 @@ class user
     /**
      * Set lng
      *
-     * @param integer $lng
+     * @param string $lng
      *
      * @return user
      */
@@ -211,7 +218,7 @@ class user
     /**
      * Get lng
      *
-     * @return int
+     * @return string
      */
     public function getLng()
     {

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/api-rest-Symfony.iml" filepath="$PROJECT_DIR$/.idea/api-rest-Symfony.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/api-rest-symfony.iml" filepath="$PROJECT_DIR$/.idea/api-rest-symfony.iml" />
     </modules>
   </component>
 </project>
