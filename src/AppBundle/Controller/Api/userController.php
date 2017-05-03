@@ -8,10 +8,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
+use JMS\Serializer\Annotation as JMS;
 
 class userController extends ApiBaseController
 {
-    private function encriptaPassword(user $user)
+    private function encryptPassword(user $user)
     {
         if ($user->getPassword() !== null && $user->getPassword() !== '')
         {
@@ -23,8 +24,9 @@ class userController extends ApiBaseController
     }
 
     /**
-     * @Route("/users/", name="get_users")
+     * @Route("/users/")
      * @Method("GET")
+     * @JMS\Groups({"sinpassword"})
      */
     public function getAction(Request $request)
     {
@@ -32,16 +34,17 @@ class userController extends ApiBaseController
 
         $users = $em->getRepository(user::class)->findAll();
 
-        return $this->correctAnswer($users, Response::HTTP_OK, array('user'));
+        return $this->correctAnswer($users, Response::HTTP_OK); // Tenía el array array('user');
     }
 
     /**
-     * @Route("/users/{id}", name="get_users")
+     * @Route("/users/{id}")
      * @Method("GET")
+     * @JMS\Groups({"sinpassword"})
      */
     public function getActionId($id)
     {
-        return $this->getEntity($id, user::class, array('user'));
+        return $this->getEntity($id, user::class); // Tenía el array array('user');
     }
 
     /**
@@ -52,7 +55,7 @@ class userController extends ApiBaseController
     {
         $funcionConfiguracionUsuario = function(user $user) use ($request)
         {
-            $this->encriptaPassword($user);
+            $this->encryptPassword($user);
 
             $user->setPhoto(
                 $request->getUriForPath(
@@ -61,7 +64,7 @@ class userController extends ApiBaseController
 
         return $this->postEntity(
             $request, user::class,
-            $funcionConfiguracionUsuario, array("usuario"));
+            $funcionConfiguracionUsuario); // Tenía el array array('user');
     }
 
     /**
@@ -75,9 +78,9 @@ class userController extends ApiBaseController
         $data = json_decode($request->getContent(), true);
 
         $user->setPassword($data['password']);
-        $this->encriptaPassword($user);
+        $this->encryptPassword($user);
 
-        return $this->saveValidating($user, array('usuario'));
+        return $this->saveValidating($user); // Tenía el array array('user');
     }
 
 
@@ -120,7 +123,7 @@ class userController extends ApiBaseController
                     {
                         $ok = fwrite($ifp, $avatar);
                         if ($ok)
-                            return $this->saveValidating($user, array('usuario'));
+                            return $this->saveValidating($user); // Tenía el array array('user');
 
                         fclose($ifp);
                     }
@@ -137,13 +140,14 @@ class userController extends ApiBaseController
     /**
      * @Route("/profile")
      * @Method("GET")
+     * @JMS\Groups({"sinpassword"})
      */
     public function profileAction(Request $request)
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
         if ($user)
-            return $this->correctAnswer($user, Response::HTTP_OK, array('usuario'));
+            return $this->correctAnswer($user, Response::HTTP_OK); // Tenía el array array('user');
 
         return $this->unauthorizedUser();
     }

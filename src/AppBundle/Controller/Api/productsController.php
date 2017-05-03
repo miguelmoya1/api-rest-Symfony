@@ -32,8 +32,6 @@ class productsController extends ApiBaseController
      *  }
      * )
      */
-
-
     public function getProducts(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -107,11 +105,6 @@ class productsController extends ApiBaseController
      *      {
      *          "name"="mainPhoto",
      *          "dataType"="string",
-     *          "required"=false,
-     *      },
-     *      {
-     *          "name"="price",
-     *          "dataType"="integer",
      *          "required"=false,
      *      }
      *  },

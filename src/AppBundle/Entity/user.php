@@ -3,14 +3,18 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * user
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\userRepository")
+ * @UniqueEntity("email", message="Ya existe un usuario con ese email")
  */
-class user
+class user implements UserInterface
 {
     /**
      * user constructor.
@@ -32,6 +36,7 @@ class user
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank(message="No se puede dejar el nombre en blanco")
      */
     private $name;
 
@@ -39,6 +44,7 @@ class user
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="No se puede dejar el email en blanco")
      */
     private $email;
 
@@ -46,6 +52,7 @@ class user
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=255)
+     * @Assert\NotBlank(message="No se puede dejar la contraseña en blanco")
      */
     private $password;
 
@@ -53,6 +60,7 @@ class user
      * @var string
      *
      * @ORM\Column(name="photo", type="string", length=255)
+     * @Assert\NotBlank(message="No se puede dejar el la foto en blanco")
      */
     private $photo;
 
@@ -223,6 +231,26 @@ class user
     public function getLng()
     {
         return $this->lng;
+    }
+
+    public function getRoles()
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function getUsername()
+    {
+        // TODO: Implement getUsername() method.
+    }
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
     }
 }
 

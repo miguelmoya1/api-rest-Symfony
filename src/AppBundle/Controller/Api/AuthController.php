@@ -10,11 +10,10 @@ use Symfony\Component\HttpFoundation\Response;
 class AuthController extends ApiBaseController
 {
     /**
-     * @Route("/auth/login")
+     * @Route("/api/tokens")
      */
     public function getTokenAction()
     {
-        // The security layer will intercept this request
         return new Response('', Response::HTTP_UNAUTHORIZED);
     }
 }

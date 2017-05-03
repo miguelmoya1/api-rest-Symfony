@@ -22,3 +22,33 @@ security:
 
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
             #form_login: ~
+        gettoken:
+            pattern:  ^/api/token$
+            stateless: true
+            gfreeau_get_jwt:
+                username_parameter: email #Si no funciona es lo de email_parameter
+                password_parameter: password
+                post_only: true
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        api:
+            pattern:   ^/api
+            anonymous: true
+            stateless: true
+            lexik_jwt: ~
+
+        main:
+            anonymous: ~
+
+    access_control:
+        - { path: ^/apitokens, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+
+    encoders:
+        AppBundle\Entity\user: sha512
+
+    providers:
+        our_users:
+            entity: { class: AppBundle\Entity\User, property: email }
