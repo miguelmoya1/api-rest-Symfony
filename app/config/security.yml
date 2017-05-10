@@ -2,19 +2,12 @@
 # http://symfony.com/doc/current/security.html
 security:
 
-    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
-    providers:
-        in_memory:
-            memory: ~
-
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
-            anonymous: ~
             # activate different ways to authenticate
 
             # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
@@ -23,7 +16,7 @@ security:
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
             #form_login: ~
         gettoken:
-            pattern:  ^/api/token$
+            pattern:  ^/auth/login$
             stateless: true
             gfreeau_get_jwt:
                 username_parameter: email #Si no funciona es lo de email_parameter
@@ -33,7 +26,7 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
         api:
-            pattern:   ^/api
+            pattern:   ^/
             anonymous: true
             stateless: true
             lexik_jwt: ~
@@ -42,13 +35,12 @@ security:
             anonymous: ~
 
     access_control:
-        - { path: ^/apitokens, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/auth, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^, roles: IS_AUTHENTICATED_FULLY }
 
     encoders:
         AppBundle\Entity\user: sha512
 
     providers:
         our_users:
-            entity: { class: AppBundle\Entity\User, property: email }
+            entity: { class: AppBundle\Entity\user, property: email }

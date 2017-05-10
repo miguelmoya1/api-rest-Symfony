@@ -53,7 +53,7 @@ class userController extends ApiBaseController
      */
     public function postAction(Request $request)
     {
-        $funcionConfiguracionUsuario = function(user $user) use ($request)
+        $functionConfigUser = function(user $user) use ($request)
         {
             $this->encryptPassword($user);
 
@@ -64,7 +64,7 @@ class userController extends ApiBaseController
 
         return $this->postEntity(
             $request, user::class,
-            $funcionConfiguracionUsuario); // Tenía el array array('user');
+            $functionConfigUser); // Tenía el array array('user');
     }
 
     /**

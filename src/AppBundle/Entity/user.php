@@ -21,6 +21,8 @@ class user implements UserInterface
      */
     public function __construct()
     {
+        $this->lat = 0;
+        $this->lng = 0;
     }
 
     /**
@@ -240,7 +242,7 @@ class user implements UserInterface
 
     public function getUsername()
     {
-        // TODO: Implement getUsername() method.
+        return $this->email;
     }
 
     public function getSalt()
