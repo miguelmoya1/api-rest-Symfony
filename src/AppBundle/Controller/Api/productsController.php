@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\Entity\category;
 use AppBundle\Entity\product;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -76,7 +77,7 @@ class productsController extends ApiBaseController
     }
 
     /**
-     * @Route("/products", name="post_products")
+     * @Route("/products/", name="post_products")
      * @Method("POST")
      * @ApiDoc(
      *  section="Products",
@@ -89,23 +90,28 @@ class productsController extends ApiBaseController
      *      },
      *      {
      *          "name"="description",
-     *          "dataType"="integer",
-     *          "required"=false,
+     *          "dataType"="string",
+     *          "required"=true,
      *      },
      *      {
      *          "name"="status",
-     *          "dataType"="string",
+     *          "dataType"="integer",
      *          "required"=false,
      *      },
      *      {
      *          "name"="price",
      *          "dataType"="integer",
-     *          "required"=false,
+     *          "required"=true,
      *      },
      *      {
      *          "name"="mainPhoto",
      *          "dataType"="string",
      *          "required"=false,
+     *      },
+     *      {
+     *          "name"="category",
+     *          "dataType"="integer",
+     *          "required"=true,
      *      }
      *  },
      *  statusCodes={
@@ -124,14 +130,17 @@ class productsController extends ApiBaseController
      */
     public function postAction(Request $request)
     {
-        $configProduct = function(Product $product) use ($request)
-        {
+        $configProduct = function (Product $product) use ($request) {
             $user = $this->get('security.token_storage')->getToken()->getUser();
-
+            $category = $this->getDoctrine()
+                ->getRepository('AppBundle:category')
+                ->find(json_decode($request
+                    ->getContent())->idCategory);
+            $product->setCategory($category);
             $product->setUser($user);
         };
 
         return $this->postEntity(
-            $request, Product::class, $configProduct);
+            $request, product::class, $configProduct);
     }
 }

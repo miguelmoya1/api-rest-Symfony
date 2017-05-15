@@ -82,21 +82,18 @@ class product
     private $user;
 
     /**
-     * product constructor.
+     * @ORM\ManyToOne(targetEntity="category", inversedBy="product")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     * @JMS\Accessor(getter="getIdCategory")
+     * @JMS\SerializedName("idCategory")
+     * @JMS\Type("integer")
      */
-    public function __construct()
-    {
-        $this->datePublished = new \DateTime('now');
-        $this->numVisits = 0;
-        $this->mainPhoto = 'default.jpg';
-        $this->user = new User();
-    }
+    private $category;
 
 
     public function getIdUser()
     {
-        // return $this->user->getId();
-        return 0;
+        return $this->user->getId();
     }
 
     public function setUser($user)
@@ -109,6 +106,63 @@ class product
     public function getUser()
     {
         return $this->user;
+    }
+
+    public function getIdCategory()
+    {
+        return $this->category->getId();
+    }
+
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param mixed
+     * @return product
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+        return $this;
+    }
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="bookmarked", type="boolean")
+     */
+    private $bookmarked;
+
+    /**
+     * @return int
+     */
+    public function getBookmarked()
+    {
+        return $this->bookmarked;
+    }
+
+    /**
+     * @param int $bookmarked
+     */
+    public function setBookmarked($bookmarked)
+    {
+        $this->bookmarked = $bookmarked;
+    }
+
+    /**
+     * product constructor.
+     */
+    public function __construct()
+    {
+        $this->datePublished = new \DateTime('now');
+        $this->numVisits = 0;
+        $this->mainPhoto = 'default.jpg';
+        $this->status = 0;
+        $this->bookmarked = 0;
+        $this->user = new User();
+        $this->category = new category();
     }
 
 
