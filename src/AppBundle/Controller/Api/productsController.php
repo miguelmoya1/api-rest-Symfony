@@ -37,7 +37,7 @@ class productsController extends ApiBaseController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $products = $em->getRepository(Product::class)->findAll();
+        $products = $em->getRepository(product::class)->findAll();
 
         return $this->correctAnswer($products);
     }
@@ -73,7 +73,7 @@ class productsController extends ApiBaseController
      */
     public function getAction($id)
     {
-        return $this->getEntity($id, Product::class);
+        return $this->getEntity($id, product::class);
     }
 
     /**
@@ -134,13 +134,72 @@ class productsController extends ApiBaseController
             $user = $this->get('security.token_storage')->getToken()->getUser();
             $category = $this->getDoctrine()
                 ->getRepository('AppBundle:category')
-                ->find(json_decode($request
-                    ->getContent())->idCategory);
+                ->find(json_decode($request->getContent())->idCategory);
             $product->setCategory($category);
             $product->setUser($user);
         };
 
         return $this->postEntity(
             $request, product::class, $configProduct);
+    }
+
+    /**
+     * @Route("/products/user/", name="get_products_user")
+     * @Method("GET")
+     * @ApiDoc(
+     *  section="Products",
+     *  resource=true,
+     *  statusCodes={
+     *         200="Resultado OK",
+     *         401="Usuario no autorizado"
+     *  },
+     *  headers={
+     *      {
+     *          "required"=true,
+     *          "name"="Authorization",
+     *          "description"="Bearer {token}"
+     *      }
+     *  }
+     * )
+     */
+    public function getProductsUser(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        $id = $user->getId();
+
+        $products = $em->getRepository(product::class)->findBy(array('user' => $id));
+
+        return $this->correctAnswer($products);
+    }
+
+    /**
+     * @Route("/products/user/{id}", name="get_products_user_id", requirements={"id": "\d+"})
+     * @Method("GET")
+     * @ApiDoc(
+     *  section="Products",
+     *  resource=true,
+     *  statusCodes={
+     *         200="Resultado OK",
+     *         401="Usuario no autorizado"
+     *  },
+     *  headers={
+     *      {
+     *          "required"=true,
+     *          "name"="Authorization",
+     *          "description"="Bearer {token}"
+     *      }
+     *  }
+     * )
+     */
+    public function getProductsUserId($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $products = $em->getRepository(product::class)->findBy(array('user' => $id));
+
+        return $this->correctAnswer($products);
     }
 }
